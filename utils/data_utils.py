@@ -269,7 +269,7 @@ class IMDBDataset(Dataset):
         entry = self.data.iloc[index]
         example = entry['Sentence']
         label = entry['Label']
-        else:
-            raise ValueError('Out of range index while accessing dataset')
+#         else:
+#             raise ValueError('Out of range index while accessing dataset')
 
         return torch.from_numpy(np.array(example)).long().to(self.device), label
