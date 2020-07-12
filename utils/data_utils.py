@@ -176,7 +176,7 @@ class IMDBDataset(Dataset):
         self.split_head_density = split_head_density
         self.device = device
         
-        data = pd.read_csv(input_directory, header=None,  index_col=0)
+        data = pd.read_csv(input_directory, header=None)
         data.columns=["Label", "Sentence"]
         for index, row in data.iterrows():
             example = row["Sentence"]
