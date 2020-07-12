@@ -81,14 +81,14 @@ model = FineTunedBert(pretrained_model_name=PRETRAINED_MODEL_NAME,
                       use_gpu=True if torch.cuda.is_available() else False)
 
 # Initialize train & test datasets
-train_dataset = IMDBDataset(input_directory='data/aclImdb/train',
+train_dataset = IMDBDataset(input_directory='/content/drive/My Drive/CIL-project/csv_data/train.csv',
                             tokenizer=model.get_tokenizer(),
                             apply_cleaning=APPLY_CLEANING,
                             max_tokenization_length=MAX_TOKENIZATION_LENGTH,
                             truncation_method=TRUNCATION_METHOD,
                             device=DEVICE)
 
-test_dataset = IMDBDataset(input_directory='data/aclImdb/test',
+test_dataset = IMDBDataset(input_directory='/content/drive/My Drive/CIL-project/csv_data/validate.csv',
                            tokenizer=model.get_tokenizer(),
                            apply_cleaning=APPLY_CLEANING,
                            max_tokenization_length=MAX_TOKENIZATION_LENGTH,
@@ -161,7 +161,7 @@ for epoch in range(NUM_EPOCHS):
 
     if test_loss < best_test_loss:
         best_test_loss = test_loss
-        torch.save(model.state_dict(), 'saved_models/finetuned-bert-model.pt')
+        torch.save(model.state_dict(), '/content/drive/My Drive/CIL-project/saved_models/finetuned-bert-model.pt')
 
     print(f'\tTrain Loss: {train_loss:.3f} | Train Accuracy: {train_acc * 100:.2f}%')
     print(f'\tTest Loss:  {test_loss:.3f} | Test Accuracy:  {test_acc * 100:.2f}%')
