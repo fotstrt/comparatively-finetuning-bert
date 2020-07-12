@@ -178,6 +178,9 @@ class IMDBDataset(Dataset):
         
         data = pd.read_csv(input_directory, header=None)
         data.columns=["Label", "Sentence"]
+        self.data = data
+
+        
         for index, row in data.iterrows():
             example = row["Sentence"]
             example = tokenize_and_encode(text=example,
@@ -246,7 +249,7 @@ class IMDBDataset(Dataset):
             logging.warning('Tokenized negative reviews directory already exists!')
 
     def __len__(self):
-        return len(self.positive_files) + len(self.negative_files)
+        return len(self.data.index)
 
     def __getitem__(self, index):
         if index < self.num_positive_examples:
