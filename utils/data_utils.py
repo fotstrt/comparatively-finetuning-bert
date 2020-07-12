@@ -15,6 +15,8 @@ from tqdm import trange
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
+import pandas as pd
+
 # Setup stopwords list & word (noun, adjective, and verb) lemmatizer
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
