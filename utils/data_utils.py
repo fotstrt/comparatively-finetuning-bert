@@ -178,7 +178,9 @@ class IMDBDataset(Dataset):
         
         data = pd.read_csv(input_directory, header=None)
         data.columns=["Label", "Sentence"]
-        self.data = data
+
+        columns = ["Label", "Sentence"]
+        df = pd.DataFrame(columns=columns)
 
         
         for index, row in data.iterrows():
@@ -189,7 +191,9 @@ class IMDBDataset(Dataset):
                                               max_tokenization_length=self.max_tokenization_length,
                                               truncation_method=self.truncation_method,
                                               split_head_density=self.split_head_density)
+            df.loc[index] = [row['Label']] + [example]
 
+        self.data = df
         # Pre-tokenize & encode examples
         #self.pre_tokenize_and_encode_examples()
 
@@ -252,16 +256,19 @@ class IMDBDataset(Dataset):
         return len(self.data.index)
 
     def __getitem__(self, index):
-        if index < self.num_positive_examples:
-            file = self.positive_files[index]
-            label = torch.tensor(data=self.positive_label, dtype=torch.long).to(self.device)
-            with open(os.path.join(self.positive_path, 'tokenized_and_encoded', file), mode='rb') as f:
-                example = pickle.load(file=f)
-        elif index >= self.num_positive_examples:
-            file = self.negative_files[index-self.num_positive_examples]
-            label = torch.tensor(data=self.negative_label, dtype=torch.long).to(self.device)
-            with open(os.path.join(self.negative_path, 'tokenized_and_encoded', file), mode='rb') as f:
-                example = pickle.load(file=f)
+#         if index < self.num_positive_examples:
+#             file = self.positive_files[index]
+#             label = torch.tensor(data=self.positive_label, dtype=torch.long).to(self.device)
+#             with open(os.path.join(self.positive_path, 'tokenized_and_encoded', file), mode='rb') as f:
+#                 example = pickle.load(file=f)
+#         elif index >= self.num_positive_examples:
+#             file = self.negative_files[index-self.num_positive_examples]
+#             label = torch.tensor(data=self.negative_label, dtype=torch.long).to(self.device)
+#             with open(os.path.join(self.negative_path, 'tokenized_and_encoded', file), mode='rb') as f:
+#                 example = pickle.load(file=f)
+        entry = self.data.iloc[index]
+        example = entry['Sentence']
+        label = entry['Label']
         else:
             raise ValueError('Out of range index while accessing dataset')
 
