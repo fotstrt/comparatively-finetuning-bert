@@ -156,16 +156,16 @@ class IMDBDataset(Dataset):
     def __init__(self, input_directory, tokenizer, apply_cleaning, max_tokenization_length,
                  truncation_method='head-only', split_head_density=0.5, device='cpu'):
         super(IMDBDataset).__init__()
-        self.positive_path = os.path.join(input_directory, 'pos')
-        self.positive_files = [f for f in os.listdir(self.positive_path)
-                               if os.path.isfile(os.path.join(self.positive_path, f))]
-        self.num_positive_examples = len(self.positive_files)
-        self.positive_label = 1
-        self.negative_path = os.path.join(input_directory, 'neg')
-        self.negative_files = [f for f in os.listdir(self.negative_path)
-                               if os.path.isfile(os.path.join(self.negative_path, f))]
-        self.num_negative_examples = len(self.negative_files)
-        self.negative_label = 0
+#         self.positive_path = os.path.join(input_directory, 'pos')
+#         self.positive_files = [f for f in os.listdir(self.positive_path)
+#                                if os.path.isfile(os.path.join(self.positive_path, f))]
+#         self.num_positive_examples = len(self.positive_files)
+#         self.positive_label = 1
+#         self.negative_path = os.path.join(input_directory, 'neg')
+#         self.negative_files = [f for f in os.listdir(self.negative_path)
+#                                if os.path.isfile(os.path.join(self.negative_path, f))]
+#         self.num_negative_examples = len(self.negative_files)
+#         self.negative_label = 0
 
         self.tokenizer = tokenizer
         self.apply_cleaning = apply_cleaning
@@ -173,9 +173,20 @@ class IMDBDataset(Dataset):
         self.truncation_method = truncation_method
         self.split_head_density = split_head_density
         self.device = device
+        
+        data = pd.read_csv(input_directory, header=None,  index_col=0)
+        data.columns=["Label", "Sentence"]
+        for index, row in data.iterrows():
+            example = row["Sentence"]
+            example = tokenize_and_encode(text=example,
+                                              tokenizer=self.tokenizer,
+                                              apply_cleaning=self.apply_cleaning,
+                                              max_tokenization_length=self.max_tokenization_length,
+                                              truncation_method=self.truncation_method,
+                                              split_head_density=self.split_head_density)
 
         # Pre-tokenize & encode examples
-        self.pre_tokenize_and_encode_examples()
+        #self.pre_tokenize_and_encode_examples()
 
     def pre_tokenize_and_encode_examples(self):
         """
