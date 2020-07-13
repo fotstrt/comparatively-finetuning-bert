@@ -153,15 +153,16 @@ for epoch in range(NUM_EPOCHS):
                                   device=DEVICE,
                                   include_bert_masks=True)
 
+    print(f'\tTrain Loss: {train_loss:.3f} | Train Accuracy: {train_acc * 100:.2f}%')
+    
     test_loss, test_acc = test(model=model,
                                iterator=test_loader,
                                criterion=criterion,
                                device=DEVICE,
                                include_bert_masks=True)
 
+    print(f'\tTest Loss:  {test_loss:.3f} | Test Accuracy:  {test_acc * 100:.2f}%')
+    
     if test_loss < best_test_loss:
         best_test_loss = test_loss
         torch.save(model.state_dict(), '/content/drive/My Drive/CIL-project/saved_models/finetuned-bert-model.pt')
-
-    print(f'\tTrain Loss: {train_loss:.3f} | Train Accuracy: {train_acc * 100:.2f}%')
-    print(f'\tTest Loss:  {test_loss:.3f} | Test Accuracy:  {test_acc * 100:.2f}%')
