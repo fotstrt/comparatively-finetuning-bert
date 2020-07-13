@@ -165,4 +165,4 @@ for epoch in range(NUM_EPOCHS):
     
     if test_loss < best_test_loss:
         best_test_loss = test_loss
-        torch.save(model.state_dict(), '/content/drive/My Drive/CIL_project/saved_models/finetuned-bert-model.pt')
+        torch.save(model.state_dict(), 'saved_models/finetuned-bert-model.pt')
