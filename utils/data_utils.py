@@ -268,7 +268,8 @@ class IMDBDataset(Dataset):
 #                 example = pickle.load(file=f)
         entry = self.data.iloc[index]
         example = entry['Sentence']
-        label = entry['Label']
+        label = torch.tensor(data=entry['Label'], dtype=torch.long).to(self.device)
+        
 #         else:
 #             raise ValueError('Out of range index while accessing dataset')
 
